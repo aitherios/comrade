@@ -1,0 +1,95 @@
+grammar Period
+
+  rule period
+    [\s]* number [\s]* time_unit
+  end
+
+  rule number
+    [0-9]+
+  end
+
+  rule time_unit
+    second / minute / hour
+  end
+
+  rule word_end
+    !(!' ' .)
+  end
+
+  rule second
+    en_second / pt_second
+  end
+
+  rule en_second
+    'seconds' word_end 
+    / 
+    'second' word_end 
+    / 
+    'secs' word_end 
+    / 
+    'sec' word_end 
+    / 
+    's' word_end
+  end
+
+  rule pt_second
+    'segundo' word_end
+    /
+    'segundos' word_end
+    /
+    'seg' word_end
+    /
+    'segs' word_end
+    /
+    's' word_end
+  end
+  
+  rule minute
+    en_minute / pt_minute
+  end
+
+  rule en_minute
+    'minute' word_end 
+    / 
+    'minutes' word_end
+    / 
+    'min' word_end
+    / 
+    'mins' word_end
+    / 
+    'm' word_end
+  end
+
+  rule pt_minute
+    'minuto' word_end
+    / 
+    'minutos' word_end 
+    / 
+    'min' word_end
+    / 
+    'mins' word_end
+    / 
+    'm' word_end
+  end
+
+  rule hour
+    en_hour / pt_hour
+  end
+
+  rule en_hour
+    'hour' word_end
+    / 
+    'hours' word_end
+    / 
+    'h' word_end
+  end
+
+  rule pt_hour
+    'hora' word_end
+    / 
+    'horas' word_end
+    / 
+    'h' word_end
+  end
+
+end
