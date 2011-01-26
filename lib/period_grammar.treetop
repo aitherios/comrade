@@ -17,7 +17,12 @@ grammar Period
   end
 
   rule second
-    en_second / pt_second
+    (en_second / pt_second)
+    {
+      def second?; true; end
+      def minute?; false; end
+      def hour?; false; end
+    }
   end
 
   rule en_second
@@ -45,7 +50,12 @@ grammar Period
   end
   
   rule minute
-    en_minute / pt_minute
+    (en_minute / pt_minute)
+    {
+      def minute?; true; end
+      def second?; false; end
+      def hour?; false; end
+    }
   end
 
   rule en_minute
@@ -73,7 +83,12 @@ grammar Period
   end
 
   rule hour
-    en_hour / pt_hour
+    (en_hour / pt_hour)
+    {
+      def hour?; true; end
+      def minute?; false; end
+      def second?; false; end
+    }
   end
 
   rule en_hour
