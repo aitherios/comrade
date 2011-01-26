@@ -86,8 +86,8 @@ grammar Period
     (en_hour / pt_hour)
     {
       def hour?; true; end
-      def minute?; false; end
       def second?; false; end
+      def minute?; false; end
     }
   end
 
