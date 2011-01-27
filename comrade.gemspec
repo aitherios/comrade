@@ -1,13 +1,11 @@
 #!/usr/bin/env gem build
-
-require 'base64'
-require File.expand_path('lib/version', __FILE__)
+require 'lib/version'
 
 Gem::Specification.new do |g|
   g.name = 'comrade'
   g.version = Comrade::VERSION
   g.author = 'Renan Mendes Carvalho'
-  g.email = Base64.decode64 'YWl0aGVyaW9zQGdtYWlsLmNvbQ==\n'
+  g.email = 'aitherios@gmail.com'
   g.homepage = 'http://github.com/aitherios/comrade'
   g.summary = 'Simple visual timer on top of dzen2.'
   g.description = 'Comrade is a simple visual timer on top of dzen2.' << 
