@@ -11,7 +11,7 @@ configure do |c|
 end
 
 before_run do
-  @timer = Comrade::Timer.new ARGV.join(' ')
+  @timer = Comrade::Timer.new ARGV.join(' ').downcase
 end
 
 app :line do
