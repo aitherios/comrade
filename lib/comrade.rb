@@ -1,8 +1,12 @@
+# -*- encoding: utf-8 -*-
+
 require 'date'
 
 class DateTime
-  def unix_epoch
-    strftime('%s').to_f
+
+  # Returns the unix time, also know as unix
+  def unix_time
+    strftime('%s').to_i
   end
 end
 
@@ -22,8 +26,7 @@ module Comrade
     end
 
     def elapsed_ratio
-      currently_at = DateTime.now
-      (currently_at.unix_epoch - @started_at.unix_epoch) / (@stops_at.unix_epoch - @started_at.unix_epoch)
+      elapsed_seconds.to_f / total_seconds.to_f
     end
 
     def elapsed_percentage
@@ -42,7 +45,7 @@ module Comrade
       DateTime.now >= @stops_at
     end
 
-    protected
+    private
     
     def period_in_days time_period_string
       parsed = PeriodParser.new.parse time_period_string
@@ -56,6 +59,14 @@ module Comrade
       elsif parsed.time_unit.hour?
         parsed.number.text_value.to_f / 24
       end
+    end
+
+    def total_seconds
+      @stops_at.unix_time - @started_at.unix_time
+    end
+
+    def elapsed_seconds
+      DateTime.now.unix_time - @started_at.unix_time
     end
 
   end
