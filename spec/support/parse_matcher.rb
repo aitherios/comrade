@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 RSpec::Matchers.define :parse do |string, opts|
   match do |parser|
     parser.parse(string) != nil

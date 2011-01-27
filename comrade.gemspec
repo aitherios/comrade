@@ -1,4 +1,6 @@
 #!/usr/bin/env gem build
+# -*- encoding: utf-8 -*-
+
 require 'lib/version'
 
 Gem::Specification.new do |g|

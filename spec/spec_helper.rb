@@ -1,3 +1,5 @@
+# -*- encoding: utf-8 -*-
+
 # requiring comrade module
 base_path = File.expand_path File.dirname(__FILE__)
 require File.join(base_path, '..', 'lib', 'comrade')
