@@ -11,7 +11,7 @@ Gem::Specification.new do |g|
   g.homepage = 'http://github.com/aitherios/comrade'
   g.summary = 'Simple visual timer on top of dzen2.'
   g.description = 'Comrade is a simple visual timer on top of dzen2.' << 
-                  'It draws a line on your screen that progressively shrinks when the time passes.'
+                  ' It draws a line on your screen that progressively shrinks when the time passes.'
   g.cert_chain = nil
   g.rubyforge_project = 'Comrade'
 
