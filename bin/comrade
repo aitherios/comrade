@@ -3,7 +3,7 @@
 
 require 'rubygems'
 require 'dzen'
-require '../lib/comrade'
+require 'comrade'
 
 configure do |c|
   c.interval = 2
