@@ -12,10 +12,15 @@ end
 
 before_run do
   @timer = Comrade::Timer.new ARGV.join(' ').downcase
+  puts 'Started at ' << DateTime.now.to_s
 end
 
 app :line do
-  return "EOF" if @timer.elapsed?
-  line_width = (@timer.remaining_ratio * 1280).round
-  "^fg(red)^r(#{line_width}x1)"
+  if @timer.elapsed?
+    puts 'Stopped at ' << DateTime.now.to_s
+    "EOF"
+  else
+    line_width = (@timer.remaining_ratio * 1280).round
+    "^fg(red)^r(#{line_width}x1)"
+  end
 end
