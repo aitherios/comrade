@@ -18,7 +18,7 @@ end
 app :line do
   if @timer.elapsed?
     puts 'Stopped at ' << DateTime.now.to_s
-    "EOF"
+    Process.kill('INT', $$)
   else
     line_width = (@timer.remaining_ratio * 1280).round
     "^fg(red)^r(#{line_width}x1)"
