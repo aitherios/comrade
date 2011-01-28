@@ -1,0 +1,17 @@
+= About
+
+Comrade is a simple visual timer on top of dzen2.
+It draws a line on the top of your screen that progressively shrinks when the time passes.
+
+= Installing and Usage
+
+    gem install comrade
+
+To use just pass the time period you would like:
+
+    comrade 25m
+    comrade 5 minutes
+    comrade 60 seconds
+    comrade 24 hours
+    comrade 1 second
+    comrade 3s

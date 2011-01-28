@@ -1,4 +1,7 @@
 # -*- encoding: utf-8 -*-
 
-* adding comentaries to comrade
+* adding comentaries to comrade binary
 * RDoc
+* add a overview comentary to the comrade module
+* add flags to control some behaviour
+* add a help and usage message
