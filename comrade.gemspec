@@ -24,4 +24,5 @@ Gem::Specification.new do |g|
   g.add_dependency 'ruby-dzen',                    '~> 0.0.1'
   g.add_development_dependency 'bundler',          '~> 1.0'
   g.add_development_dependency 'rspec',            '~> 2.2'
+  g.requirements << 'dzen2, tested with version 0.8.5, http://sites.google.com/site/gotmor/dzen'
 end
