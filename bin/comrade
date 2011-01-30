@@ -18,6 +18,7 @@ end
 app :line do
   if @timer.elapsed?
     puts 'Stopped at ' << DateTime.now.to_s
+    Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
     Process.kill('INT', $$)
   else
     line_width = (@timer.remaining_ratio * 1280).round
