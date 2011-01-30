@@ -3,6 +3,7 @@
 
 require 'rubygems'
 require 'dzen'
+require 'notifier'
 require 'comrade'
 
 configure do |c|
@@ -16,7 +17,7 @@ before_run do
 end
 
 app :line do
-  if @timer.elapsed?
+  if @timer.finished?
     puts 'Stopped at ' << DateTime.now.to_s
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
     Process.kill('INT', $$)
