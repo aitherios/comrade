@@ -48,5 +48,14 @@ describe PeriodParser do
       it { should parse '1 hora' }
       it { should parse '2 horas' }
     end
+
+    context 'when parsing a timestamp' do
+      it { should parse '1:30' }
+      it { should parse '23:30' }
+      it { should parse '23:30:21' }
+      it { should parse '11:30 am' }
+      it { should parse '11:30pm' }
+    end
+
   end
 end

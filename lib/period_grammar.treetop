@@ -3,15 +3,37 @@
 grammar Period
 
   rule period
-    [\s]* number [\s]* time_unit
+    ( number [\s]* time_unit {
+      def timestamp?; false end
+
+      def to_days
+        if time_unit.second?
+          number.text_value.to_f / 86400
+        elsif time_unit.minute?
+          number.text_value.to_f / 1440
+        elsif time_unit.hour?
+          number.text_value.to_f / 24
+        end
+      end
+    })
+    / 
+    ( timestamp {
+      def timestamp?; true end
+    })
   end
 
   rule number
-    [0-9]+
+    [\d]+
   end
 
   rule time_unit
     second / minute / hour
+  end
+
+  rule timestamp
+    hour:[\d]1..2 ':' minute:[\d]2..2 
+    (':' second:[\d]2..2)?
+    ([\s]* 'am' / 'pm')?
   end
 
   rule word_end
@@ -21,9 +43,9 @@ grammar Period
   rule second
     (en_second / pt_second)
     {
-      def second?; true; end
-      def minute?; false; end
-      def hour?; false; end
+      def second?; true end
+      def minute?; false end
+      def hour?; false end
     }
   end
 
@@ -54,9 +76,9 @@ grammar Period
   rule minute
     (en_minute / pt_minute)
     {
-      def minute?; true; end
-      def second?; false; end
-      def hour?; false; end
+      def minute?; true end
+      def second?; false end
+      def hour?; false end
     }
   end
 
@@ -87,9 +109,9 @@ grammar Period
   rule hour
     (en_hour / pt_hour)
     {
-      def hour?; true; end
-      def second?; false; end
-      def minute?; false; end
+      def hour?; true end
+      def second?; false end
+      def minute?; false end
     }
   end
 

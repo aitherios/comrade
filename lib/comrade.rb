@@ -23,51 +23,53 @@ module Comrade
 
     # Initializes the variables started_at and stops_at
     # [param] time_period_string string to be parsed by treetop
-    def initialize time_period_string
+    def initialize string
       @started_at = DateTime.now
-      @stops_at = @started_at + period_in_days(time_period_string)
+
+      parsed = parse string
+      if parsed.timestamp?
+        date = DateTime.parse "#{parsed.input}#{@started_at.zone}"
+        @stops_at = date > @started_at ? date : date + 1
+      else
+        @stops_at = @started_at + parsed.to_days
+      end
     end
 
     # Elapsed time ratio
-    # Starts at 1.0 and goes down to 0.0
+    # Starts at 0.0 and goes up to 1.0
     # [return] Float
-    def elapsed_ratio; elapsed_seconds.to_f / total_seconds.to_f end
+    def elapsed_ratio
+      ratio = elapsed_seconds.to_f / total_seconds.to_f
+      ratio > 1.0 ? 1.0 : ratio
+    end
 
     # Elapsed time percentage
-    # Starts at 100 and goes down to 0
+    # Starts at 0 and goes up to 100
     # [return] Float
     def elapsed_percentage; elapsed_ratio * 100 end
     
     # Remaining time ratio
-    # Starts at 0.0 and goes to 1.0
+    # Starts at 1.0 and goes down to 0.0
     # [return] Float
     def remaining_ratio; 1 - elapsed_ratio end
 
     # Remaining time percentage
-    # Starts at 0 and goes down to 100
+    # Starts at 100 and goes down to 0
     # [return] Float
     def remaining_percentage; remaining_ratio * 100 end
 
     # Return if the time has elapsed
-    def elapsed?
-      DateTime.now >= @stops_at
-    end
+    def elapsed?; elapsed_ratio >= 1.0 end
     alias :finished? :elapsed?
 
     private
     
-    def period_in_days time_period_string
-      parsed = PeriodParser.new.parse time_period_string
-
+    # Parses the input using the PeriodParser
+    # raises 'Parsing Error' if parsing unsuccessful
+    def parse string
+      parsed = PeriodParser.new.parse string
       raise 'Parsing Error' if parsed.nil?
-
-      if parsed.time_unit.second?
-        parsed.number.text_value.to_f / 86400
-      elsif parsed.time_unit.minute?
-        parsed.number.text_value.to_f / 1440
-      elsif parsed.time_unit.hour?
-        parsed.number.text_value.to_f / 24
-      end
+      parsed
     end
 
     # Seconds between timer start and expected end

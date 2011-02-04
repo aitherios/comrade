@@ -8,7 +8,7 @@ require 'comrade'
 
 configure do |c|
   c.interval = 2
-  c.output = IO.popen('dzen2 -h 1 -ta l -bg black -w 1280', 'w')
+  c.output = IO.popen('dzen2 -h 1 -ta l -bg black -w 1280 -e "onstart=ungrabkeys,ungrabmouse"', 'w')
 end
 
 before_run do
