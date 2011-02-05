@@ -1,9 +1,11 @@
 # -*- encoding: utf-8 -*-
 
 require 'fileutils'
-require 'lib/version'
 require 'rubygems'
 require 'rspec/core/rake_task'
+
+base_path = File.expand_path File.dirname(__FILE__)
+require File.join(base_path, 'lib', 'comrade', 'version')
 
 RSpec::Core::RakeTask.new
 

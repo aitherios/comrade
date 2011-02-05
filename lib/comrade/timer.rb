@@ -1,26 +1,19 @@
 # -*- encoding: utf-8 -*-
 
-require 'date'
-class DateTime
-  # Returns the Unix time, also know as POSIX time or Unix epoch.
-  # The number of seconds elapsed since midnight of January 1, 1970 UTC
-  # [return] Fixnum
-  def unix_time
-    strftime('%s').to_i
-  end
-end
-
 module Comrade
-  require 'version'
   require 'rubygems'
   require 'treetop'
 
   base_path = File.expand_path File.dirname(__FILE__)
   # Treetop grammar used to parse time period inputs
-  Treetop.load File.join(base_path, 'period_grammar.treetop')
+  Treetop.load File.join(base_path, '..', 'period_grammar.treetop')
+  # Comrade version file
+  require File.join(base_path, 'version')
+  # DateTime class append
+  require File.join(base_path, '..', 'date')
+
 
   class Timer
-
     # Initializes the variables started_at and stops_at
     # [param] time_period_string string to be parsed by treetop
     def initialize string
