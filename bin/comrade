@@ -10,14 +10,20 @@ require 'comrade/optparse'
 @options_hash = Comrade::Optparse.parse! ARGV
 @timer = Comrade::Timer.new @options_hash[:timer] if @options_hash[:timer]
 
+puts @options_hash[:message]
+exit if @options_hash[:exit]
+
 configure do |c|
   c.interval = 2
   c.output = IO.popen(
                'dzen2' <<
                  " -h #{@options_hash[:thickness]}" <<
-                 ' -ta l' << 
-                 ' -bg black' <<
                  " -w #{@options_hash[:size]}" <<
+                 " -x #{@options_hash[:xposition]}" <<
+                 " -y #{@options_hash[:yposition]}" <<
+                 ' -ta l' << 
+                 " -bg #{@options_hash[:background_color]}" <<
+                 " -fg #{@options_hash[:color]}" <<
                  ' -e "onstart=ungrabkeys,ungrabmouse"',
                'w'
               )
@@ -38,5 +44,5 @@ app :line do
   end
 
   line_size = (@timer.remaining_ratio * @options_hash[:size].to_f).round
-  "^fg(#{@options_hash[:color]})^r(#{line_size}x#{@options_hash[:thickness]})"
+  "^r(#{line_size}x#{@options_hash[:thickness]})"
 end

@@ -21,6 +21,11 @@ module Comrade
           hash[:color] = color.strip
         end
 
+        hash[:background_color] = 'black'
+        opts.on('-b', '--background COLOR', String, 'Line background color') do |color|
+          hash[:background_color] = color.strip
+        end
+
         hash[:size] = 1280
         opts.on('-s', '--size SIZE', Integer, 'Line size in pixels') do |size|
           hash[:size] = size
@@ -31,8 +36,21 @@ module Comrade
           hash[:thickness] = thickness
         end
 
+        hash[:xposition] = 0
+        opts.on('-x X', Integer, 'Screen position in the X axis') do |x|
+          hash[:xposition] = x
+        end
+
+        hash[:yposition] = 0
+        opts.on('-y Y', Integer, 'Screen position in the Y axis') do |y|
+          hash[:yposition] = y
+        end
+
         opts.separator ''
         opts.separator 'Common arguments:'
+
+        hash[:exit] = false
+        hash[:message] = ''
 
         opts.on_tail('-h', '--help', 'Show this message') do
           hash[:message] = opts.to_s

@@ -65,19 +65,19 @@ describe Comrade::Optparse do
     describe '[:size]', 'line size flag' do
       context 'short style' do
         subject { Comrade::Optparse.parse! ['-s', '250'] }
-        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should be_an_instance_of Fixnum }
         its([:size]) { should == 250 }
       end
 
       context 'long style' do
         subject { Comrade::Optparse.parse! ['--size', '250'] }
-        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should be_an_instance_of Fixnum }
         its([:size]) { should == 250 }
       end
 
       context 'default value' do
         subject { Comrade::Optparse.parse! ['25m'] }
-        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should be_an_instance_of Fixnum }
         its([:size]) { should == 1280 }
       end
     end
@@ -111,6 +111,54 @@ describe Comrade::Optparse do
       context 'with a loop' do
         subject { Comrade::Optparse.parse! ['-t', '250', '25m', 'loop'] }
         its([:timer]) { should == '25m loop' }
+      end
+    end
+    
+    describe '[:xposition]', 'screen x position flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-x', '300'] }
+        its([:xposition]) { should be_an_instance_of Fixnum }
+        its([:xposition]) { should == 300 }
+      end
+
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:xposition]) { should be_an_instance_of Fixnum }
+        its([:xposition]) { should == 0 }
+      end
+    end
+
+    describe '[:yposition]', 'screen x position flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-y', '300'] }
+        its([:yposition]) { should be_an_instance_of Fixnum }
+        its([:yposition]) { should == 300 }
+      end
+
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:yposition]) { should be_an_instance_of Fixnum }
+        its([:yposition]) { should == 0 }
+      end
+    end
+
+    describe '[:background_color]', 'line background color' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-b', 'red'] }
+        its([:background_color]) { should be_an_instance_of String }
+        its([:background_color]) { should == 'red' }
+      end
+
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--background', 'red'] }
+        its([:background_color]) { should be_an_instance_of String }
+        its([:background_color]) { should == 'red' }
+      end
+
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:background_color]) { should be_an_instance_of String }
+        its([:background_color]) { should == 'black' }
       end
     end
 
