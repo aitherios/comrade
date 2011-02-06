@@ -37,6 +37,7 @@ app :line do
   if @timer.finished? and @timer.loop?
     puts 'Another loop @ ' << DateTime.now.to_s
     @timer = Comrade::Timer.new @options_hash[:timer]
+    Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
   elsif @timer.finished?
     puts 'Stopped @ ' << DateTime.now.to_s
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
