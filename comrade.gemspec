@@ -1,7 +1,8 @@
 #!/usr/bin/env gem build
 # -*- encoding: utf-8 -*-
 
-require 'lib/version'
+base_path = File.expand_path File.dirname(__FILE__)
+require File.join(base_path, 'lib', 'comrade', 'version')
 
 Gem::Specification.new do |g|
   g.name = 'comrade'
