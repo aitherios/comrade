@@ -4,7 +4,8 @@
 require 'rubygems'
 require 'dzen'
 require 'notifier'
-require 'comrade'
+require 'comrade/timer'
+require 'comrade/optparse'
 
 @options_hash = Comrade::Optparse.parse! ARGV
 @timer = Comrade::Timer.new @options_hash[:timer] if @options_hash[:timer]

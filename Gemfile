@@ -7,5 +7,5 @@ gem 'ruby-dzen', '~> 0.0.1'
 gem 'notifier',  '~> 0.1.2'
 
 group :development, :test do
-  gem 'rspec',   '~> 2.2'
+  gem 'rspec',   '~> 2.5.0'
 end

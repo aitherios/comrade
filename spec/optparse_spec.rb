@@ -6,83 +6,112 @@ describe Comrade::Optparse do
 
   describe 'parse' do
 
-    it 'should return a hash' do
-      Comrade::Optparse.parse!(['']).should be_an_instance_of Hash
-      Comrade::Optparse.parse!(['-h']).should be_an_instance_of Hash
+    it { Comrade::Optparse.parse!(['']).should be_an_instance_of Hash }
+    it { Comrade::Optparse.parse!(['-h']).should be_an_instance_of Hash }
+
+    context 'when parsing help flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-h'] }
+        its([:message]) { should be_an_instance_of String }
+        its([:message]) { should_not be_empty }
+        its([:exit]) { should be_true }
+      end
+
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--help'] }
+        its([:message]) { should be_an_instance_of String }
+        its([:message]) { should_not be_empty }
+        its([:exit]) { should be_true }
+      end
     end
 
-    it 'should parse help message flag' do
-      hash = Comrade::Optparse.parse! ['-h']
-      hash[:message].should be_an_instance_of String
-      hash[:message].should_not be_empty
-      hash[:exit].should be_true
-
-      hash = Comrade::Optparse.parse! ['--help']
-      hash[:message].should be_an_instance_of String
-      hash[:message].should_not be_empty
-      hash[:exit].should be_true
+    context 'when parsing version flag' do
+      subject { Comrade::Optparse.parse! ['--version'] }
+      its([:message]) { should be_an_instance_of String }
+      its([:message]) { should_not be_empty }
+      its([:exit]) { should be_true }
     end
 
-    it 'should parse version flag' do
-      hash = Comrade::Optparse.parse! ['--version']
-      hash[:message].should be_an_instance_of String
-      hash[:message].should_not be_empty
-      hash[:exit].should be_true
+    describe '[:color]', 'line color flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-c', 'blue'] }
+        its([:color]) { should be_an_instance_of String }
+        its([:color]) { should_not be_empty }
+        its([:color]) { should == 'blue' }
+      end
+
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--color', 'blue'] }
+        its([:color]) { should be_an_instance_of String }
+        its([:color]) { should_not be_empty }
+        its([:color]) { should == 'blue' }
+      end
+
+      context 'long style, british spelling' do
+        subject { Comrade::Optparse.parse! ['--colour', 'blue'] }
+        its([:color]) { should be_an_instance_of String }
+        its([:color]) { should_not be_empty }
+        its([:color]) { should == 'blue' }
+      end
+
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:color]) { should be_an_instance_of String }
+        its([:color]) { should_not be_empty }
+        its([:color]) { should == 'red' }
+      end
     end
 
-    it 'should parse color flag' do
-      hash = Comrade::Optparse.parse! ['-c', 'blue']
-      hash[:color].should be_an_instance_of String
-      hash[:color].should_not be_empty
-      hash[:color].should == 'blue'
+    describe '[:size]', 'line size flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-s', '250'] }
+        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should == 250 }
+      end
 
-      hash = Comrade::Optparse.parse! ['--color', 'blue']
-      hash[:color].should be_an_instance_of String
-      hash[:color].should_not be_empty
-      hash[:color].should == 'blue'
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--size', '250'] }
+        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should == 250 }
+      end
 
-      hash = Comrade::Optparse.parse! ['--color=blue']
-      hash[:color].should be_an_instance_of String
-      hash[:color].should_not be_empty
-      hash[:color].should == 'blue'
-
-      hash = Comrade::Optparse.parse! ['--color', '#ffffff']
-      hash[:color].should be_an_instance_of String
-      hash[:color].should_not be_empty
-      hash[:color].should == '#ffffff'
-
-      hash = Comrade::Optparse.parse! ['--colour', '#ffffff']
-      hash[:color].should be_an_instance_of String
-      hash[:color].should_not be_empty
-      hash[:color].should == '#ffffff'
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:size]) { should be_an_instance_of Fixnum}
+        its([:size]) { should == 1280 }
+      end
     end
 
-    it 'should parse line size' do
-      hash = Comrade::Optparse.parse! ['-s', '250']
-      hash[:size].should be_an_instance_of Fixnum
-      hash[:size].should == 250
+    describe '[:thickness]', 'line thickness flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-t', '250'] }
+        its([:thickness]) { should be_an_instance_of Fixnum }
+        its([:thickness]) { should == 250 }
+      end
 
-      hash = Comrade::Optparse.parse! ['--size', '250']
-      hash[:size].should be_an_instance_of Fixnum
-      hash[:size].should == 250
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--thickness', '250'] }
+        its([:thickness]) { should be_an_instance_of Fixnum }
+        its([:thickness]) { should == 250 }
+      end
+      
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:thickness]) { should be_an_instance_of Fixnum }
+        its([:thickness]) { should == 1 }
+      end
     end
 
-    it 'should parse line thickness' do
-      hash = Comrade::Optparse.parse! ['-t', '250']
-      hash[:thickness].should be_an_instance_of Fixnum
-      hash[:thickness].should == 250
+    describe '[:timer]', 'timer arguments' do
+      context 'without a loop' do
+        subject { Comrade::Optparse.parse! ['-t', '250', '25m'] }
+        its([:timer]) { should == '25m' }
+      end
 
-      hash = Comrade::Optparse.parse! ['--thickness', '250']
-      hash[:thickness].should be_an_instance_of Fixnum
-      hash[:thickness].should == 250
-    end
-
-    it 'should return timer arguments' do
-      hash = Comrade::Optparse.parse! ['-t', '250', '25m']
-      hash[:timer].should == '25m'
-
-      hash = Comrade::Optparse.parse! ['-t', '250', '25m', 'loop']
-      hash[:timer].should == '25m loop'
+      context 'with a loop' do
+        subject { Comrade::Optparse.parse! ['-t', '250', '25m', 'loop'] }
+        its([:timer]) { should == '25m loop' }
+      end
     end
 
   end

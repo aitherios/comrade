@@ -21,12 +21,12 @@ module Comrade
           hash[:color] = color.strip
         end
 
-        hash[:size] = '1280'
+        hash[:size] = 1280
         opts.on('-s', '--size SIZE', Integer, 'Line size in pixels') do |size|
           hash[:size] = size
         end
 
-        hash[:thickness] = '1'
+        hash[:thickness] = 1
         opts.on('-t', '--thickness THICKNESS', Integer, 'Line thickness in pixels') do |thickness|
           hash[:thickness] = thickness
         end
