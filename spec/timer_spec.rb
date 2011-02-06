@@ -10,6 +10,7 @@ describe Comrade::Timer do
     it { should construct '60 seconds' }
     it { should construct '24h' }
     it { should construct '13:37' }
+    it { should construct '25m loop' }
   end
 
   context 'beeing initialized with 10 seconds' do
@@ -50,6 +51,24 @@ describe Comrade::Timer do
       its(:remaining_ratio) { should == 0.0 }
       its(:remaining_percentage) { should == 0 }
       its(:elapsed?) { should be_true }
+    end
+  end
+
+  context 'when concerning the loop option' do
+    context 'present' do
+      before { @timer = Comrade::Timer.new '10 seconds loop' }
+      subject { @timer }
+
+      it { should respond_to :loop? }
+      its(:loop?) { should be_true }
+    end
+
+    context 'missing' do
+      before { @timer = Comrade::Timer.new '10 seconds' }
+      subject { @timer }
+
+      it { should respond_to :loop? }
+      its(:loop?) { should be_false }
     end
   end
 

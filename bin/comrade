@@ -4,25 +4,39 @@
 require 'rubygems'
 require 'dzen'
 require 'notifier'
-require 'comrade'
+require '../lib/comrade/optparse'
+require '../lib/comrade/timer'
+
+@options_hash = Comrade::Optparse.parse! ARGV
+@timer = Comrade::Timer.new @options_hash[:timer] if @options_hash[:timer]
 
 configure do |c|
   c.interval = 2
-  c.output = IO.popen('dzen2 -h 1 -ta l -bg black -w 1280 -e "onstart=ungrabkeys,ungrabmouse"', 'w')
+  c.output = IO.popen(
+               'dzen2' <<
+                 " -h #{@options_hash[:thickness]}" <<
+                 ' -ta l' << 
+                 ' -bg black' <<
+                 " -w #{@options_hash[:size]}" <<
+                 ' -e "onstart=ungrabkeys,ungrabmouse"',
+               'w'
+              )
 end
 
 before_run do
-  @timer = Comrade::Timer.new ARGV.join(' ').downcase
-  puts 'Started at ' << DateTime.now.to_s
+  puts 'Started @ ' << DateTime.now.to_s
 end
 
 app :line do
-  if @timer.finished?
-    puts 'Stopped at ' << DateTime.now.to_s
+  if @timer.finished? and @timer.loop?
+    puts 'Another loop @ ' << DateTime.now.to_s
+    @timer = Comrade::Timer.new @options_hash[:timer]
+  elsif @timer.finished?
+    puts 'Stopped @ ' << DateTime.now.to_s
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
     Process.kill('INT', $$)
-  else
-    line_width = (@timer.remaining_ratio * 1280).round
-    "^fg(red)^r(#{line_width}x1)"
   end
+
+  line_size = (@timer.remaining_ratio * @options_hash[:size].to_f).round
+  "^fg(#{@options_hash[:color]})^r(#{line_size}x#{@options_hash[:thickness]})"
 end

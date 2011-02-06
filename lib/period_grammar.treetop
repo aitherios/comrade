@@ -3,23 +3,35 @@
 grammar Period
 
   rule period
-    ( number [\s]* time_unit {
-      def timestamp?; false end
+    ( 
+      number 
+      [\s]* 
+      time_unit 
+      [\s]*
+      loop:loop?
+      {
+        def timestamp?; false end
 
-      def to_days
-        if time_unit.second?
-          number.text_value.to_f / 86400
-        elsif time_unit.minute?
-          number.text_value.to_f / 1440
-        elsif time_unit.hour?
-          number.text_value.to_f / 24
+        def to_days
+          if time_unit.second?
+            number.text_value.to_f / 86400
+          elsif time_unit.minute?
+            number.text_value.to_f / 1440
+          elsif time_unit.hour?
+            number.text_value.to_f / 24
+          end
         end
-      end
-    })
+
+        def loop?; not loop.text_value.empty? end
+      }
+    )
     / 
-    ( timestamp {
-      def timestamp?; true end
-    })
+    ( 
+      timestamp 
+      {
+        def timestamp?; true end
+      }
+    )
   end
 
   rule number
@@ -129,6 +141,10 @@ grammar Period
     'horas' word_end
     / 
     'h' word_end
+  end
+
+  rule loop
+    'loop'
   end
 
 end

@@ -8,13 +8,31 @@ module Comrade
   require File.join(base_path, 'version')
   
   class Optparse
-    def self.parse *args
+    def self.parse! args
       hash = {}
       OptionParser.new do |opts|
         opts.banner = 'Usage: comrade [options] [time]'
 
         opts.separator ''
-        opts.separator 'Common options:'
+        opts.separator 'Optional arguments:'
+
+        hash[:color] = 'red'
+        opts.on('-c', '--color COLOR', '--colour COLOR', String, 'Line color') do |color|
+          hash[:color] = color.strip
+        end
+
+        hash[:size] = '1280'
+        opts.on('-s', '--size SIZE', Integer, 'Line size in pixels') do |size|
+          hash[:size] = size
+        end
+
+        hash[:thickness] = '1'
+        opts.on('-t', '--thickness THICKNESS', Integer, 'Line thickness in pixels') do |thickness|
+          hash[:thickness] = thickness
+        end
+
+        opts.separator ''
+        opts.separator 'Common arguments:'
 
         opts.on_tail('-h', '--help', 'Show this message') do
           hash[:message] = opts.to_s
@@ -32,7 +50,9 @@ module Comrade
         end
       end.parse! args
 
-      return hash
+      hash[:timer] = args.join(' ') unless args.empty?
+
+      hash
     end
   end
 end

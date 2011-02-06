@@ -57,5 +57,10 @@ describe PeriodParser do
       it { should parse '11:30pm' }
     end
 
+    context 'when parsing a time period with the loop option' do
+      it { should parse '1 hour loop' }
+      it { should parse '25 minutes loop' }
+    end
+
   end
 end

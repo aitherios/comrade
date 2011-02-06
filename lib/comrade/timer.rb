@@ -19,12 +19,12 @@ module Comrade
     def initialize string
       @started_at = DateTime.now
 
-      parsed = parse string
-      if parsed.timestamp?
-        date = DateTime.parse "#{parsed.input}#{@started_at.zone}"
+      @parsed = parse string
+      if @parsed.timestamp?
+        date = DateTime.parse "#{@parsed.input}#{@started_at.zone}"
         @stops_at = date > @started_at ? date : date + 1
       else
-        @stops_at = @started_at + parsed.to_days
+        @stops_at = @started_at + @parsed.to_days
       end
     end
 
@@ -54,6 +54,11 @@ module Comrade
     # Return if the time has elapsed
     def elapsed?; elapsed_ratio >= 1.0 end
     alias :finished? :elapsed?
+
+    # Timer should loop
+    def loop?
+      @parsed.loop?
+    end
 
     private
     
