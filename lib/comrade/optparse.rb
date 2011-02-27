@@ -37,17 +37,22 @@ module Comrade
         end
 
         hash[:xposition] = 0
-        opts.on('-x X', Integer, 'Screen position in the X axis') do |x|
+        opts.on('-x X', Integer, 'X axis position in pixels') do |x|
           hash[:xposition] = x
         end
 
         hash[:yposition] = 0
-        opts.on('-y Y', Integer, 'Screen position in the Y axis') do |y|
+        opts.on('-y Y', Integer, 'Y axis position in pixels') do |y|
           hash[:yposition] = y
         end
 
         opts.separator ''
         opts.separator 'Common arguments:'
+
+        hash[:quiet] = false
+        opts.on_tail('-q', '--quiet', 'Keep quiet, doesn\'t print any text') do
+          hash[:quiet] = true
+        end
 
         hash[:exit] = false
         hash[:message] = ''
@@ -60,10 +65,10 @@ module Comrade
         opts.on_tail('--version', 'Show version') do
           hash[:message] = "comrade version #{Comrade::VERSION} \n\n" <<
                            "Copyright (C) 2010 Free Software Foundation, Inc.\n" <<
-                           "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>." <<
-                           "This is free software: you are free to change and redistribute it." <<
-                           "There is NO WARRANTY, to the extent permitted by law." <<
-                           "Written by Renan Mendes Carvalho."
+                           "License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.\n" <<
+                           "This is free software: you are free to change and redistribute it.\n" <<
+                           "There is NO WARRANTY, to the extent permitted by law.\n" <<
+                           "Written by Renan Mendes Carvalho.\n"
           hash[:exit] = true
         end
       end.parse! args
