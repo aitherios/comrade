@@ -10,7 +10,7 @@ require 'comrade/optparse'
 @options_hash = Comrade::Optparse.parse! ARGV
 @timer = Comrade::Timer.new @options_hash[:timer] if @options_hash[:timer]
 
-puts @options_hash[:message]
+puts @options_hash[:message] unless @options_hash[:quiet]
 exit if @options_hash[:exit]
 
 configure do |c|
@@ -30,20 +30,20 @@ configure do |c|
 end
 
 before_run do
-  puts 'Started @ ' << DateTime.now.to_s
+  puts 'Started @ ' << DateTime.now.to_s unless @options_hash[:quiet]
 end
 
 app :line do
   if @timer.finished? and @timer.loop?
-    puts 'Another loop @ ' << DateTime.now.to_s
+    puts 'Another loop @ ' << DateTime.now.to_s unless @options_hash[:quiet]
     @timer = Comrade::Timer.new @options_hash[:timer]
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
   elsif @timer.finished?
-    puts 'Stopped @ ' << DateTime.now.to_s
+    echo 'Stopped @ ' << DateTime.now.to_s
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
     Process.kill('INT', $$)
   end
 
   line_size = (@timer.remaining_ratio * @options_hash[:size].to_f).round
-  "^r(#{line_size}x#{@options_hash[:thickness]})"
+  "^raise()^r(#{line_size}x#{@options_hash[:thickness]})"
 end

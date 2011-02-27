@@ -142,7 +142,7 @@ describe Comrade::Optparse do
       end
     end
 
-    describe '[:background_color]', 'line background color' do
+    describe '[:background_color]', 'line background color flag' do
       context 'short style' do
         subject { Comrade::Optparse.parse! ['-b', 'red'] }
         its([:background_color]) { should be_an_instance_of String }
@@ -159,6 +159,23 @@ describe Comrade::Optparse do
         subject { Comrade::Optparse.parse! ['25m'] }
         its([:background_color]) { should be_an_instance_of String }
         its([:background_color]) { should == 'black' }
+      end
+    end
+
+    describe '[:quiet]', 'quiet flag' do
+      context 'short style' do
+        subject { Comrade::Optparse.parse! ['-q', '25m'] }
+        its([:quiet]) { should be_true }
+      end
+
+      context 'long style' do
+        subject { Comrade::Optparse.parse! ['--quiet', '25m'] }
+        its([:quiet]) { should be_true }
+      end
+
+      context 'default value' do
+        subject { Comrade::Optparse.parse! ['25m'] }
+        its([:quiet]) { should be_false }
       end
     end
 
