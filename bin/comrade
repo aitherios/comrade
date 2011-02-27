@@ -24,7 +24,7 @@ configure do |c|
                  ' -ta l' << 
                  " -bg #{@options_hash[:background_color]}" <<
                  " -fg #{@options_hash[:color]}" <<
-                 ' -e "onstart=ungrabkeys,ungrabmouse"',
+                 ' -e "onstart=ungrabkeys,ungrabmouse;onnewinput=raise"',
                'w'
               )
 end
@@ -35,15 +35,15 @@ end
 
 app :line do
   if @timer.finished? and @timer.loop?
+    Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
     puts 'Another loop @ ' << DateTime.now.to_s unless @options_hash[:quiet]
     @timer = Comrade::Timer.new @options_hash[:timer]
-    Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
   elsif @timer.finished?
-    echo 'Stopped @ ' << DateTime.now.to_s
     Notifier.notify :title => 'comrade', :message => ARGV.join(' ')
+    echo 'Stopped @ ' << DateTime.now.to_s
     Process.kill('INT', $$)
   end
 
   line_size = (@timer.remaining_ratio * @options_hash[:size].to_f).round
-  "^raise()^r(#{line_size}x#{@options_hash[:thickness]})"
+  "^r(#{line_size}x#{@options_hash[:thickness]})"
 end
