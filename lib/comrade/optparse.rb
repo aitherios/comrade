@@ -26,7 +26,7 @@ module Comrade
           hash[:background_color] = color.strip
         end
 
-        hash[:size] = 1280
+        hash[:size] = `xrandr`.grep(/\*/)[0].match(/\d+/)[0]
         opts.on('-s', '--size SIZE', Integer, 'Line size in pixels') do |size|
           hash[:size] = size
         end
