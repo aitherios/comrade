@@ -11,6 +11,16 @@ grammar Period
       loop:loop?
       {
         def timestamp?; false end
+        
+        def to_seconds
+          if time_unit.second?
+            number.text_value.to_f
+          elsif time_unit.minute?
+            number.text_value.to_f * 60
+          elsif time_unit.hour?
+            number.text_value.to_f * 60 * 24
+          end
+        end
 
         def to_days
           if time_unit.second?

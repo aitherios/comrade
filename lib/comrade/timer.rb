@@ -17,14 +17,14 @@ module Comrade
     # Initializes the variables started_at and stops_at
     # [param] time_period_string string to be parsed by treetop
     def initialize string
-      @started_at = DateTime.now
+      @started_at = Time.now
 
       @parsed = parse string
       if @parsed.timestamp?
         date = DateTime.parse "#{@parsed.input}#{@started_at.zone}"
         @stops_at = date > @started_at ? date : date + 1
       else
-        @stops_at = @started_at + @parsed.to_days
+        @stops_at = @started_at + @parsed.to_seconds
       end
     end
 
@@ -44,7 +44,7 @@ module Comrade
     # Remaining time ratio
     # Starts at 1.0 and goes down to 0.0
     # [return] Float
-    def remaining_ratio; 1 - elapsed_ratio end
+    def remaining_ratio;1 - elapsed_ratio end
 
     # Remaining time percentage
     # Starts at 100 and goes down to 0
@@ -79,7 +79,7 @@ module Comrade
     # Elapsed seconds since timer started
     # [return] Fixnum
     def elapsed_seconds
-      DateTime.now.unix_time - @started_at.unix_time
+      Time.now.unix_time - @started_at.unix_time
     end
 
   end
